@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b1630" />
+  <meta name="description" content="한글 자모 단위로 타수를 측정하는 반응형 한글 타자 연습 게임" />
+  <title>한글 타자 연습 | 한 글자씩 성장하기</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="site-header">
+      <div class="brand" aria-label="한글 타자 연습">
+        <div class="brand-mark" aria-hidden="true">한</div>
+        <div class="brand-copy">
+          <span class="brand-kicker">KOREAN TYPING</span>
+          <h1>한글 타자 연습</h1>
+        </div>
+      </div>
+      <div class="header-chip"><span class="chip-dot" aria-hidden="true"></span> 하루 5분, 타자 실력 쑥쑥</div>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-eyebrow"><span aria-hidden="true">✦</span> 매일 조금씩, 더 정확하게</div>
+        <h2 id="hero-title">한 글자씩, <span>실력이 자랍니다.</span></h2>
+        <p>문장을 보고 그대로 입력해 보세요. 첫 입력부터 시간이 측정되고, 문장을 완성하면 결과가 나타납니다.</p>
+      </section>
+
+      <div class="content-grid">
+        <section class="game-card" aria-labelledby="game-title">
+          <div class="card-heading">
+            <div>
+              <p class="section-kicker">TODAY'S CHALLENGE</p>
+              <h3 id="game-title">오늘의 타자 도전</h3>
+            </div>
+            <span class="random-badge">5개 문장 중 랜덤 출제</span>
+          </div>
+
+          <div class="sentence-box">
+            <div class="sentence-head">
+              <span class="field-label">따라 쓸 문장</span>
+              <span class="sentence-tip">띄어쓰기와 문장부호까지 정확하게</span>
+            </div>
+            <p id="targetText" class="target-text"></p>
+          </div>
+
+          <label for="typingInput" class="input-label">여기에 문장을 입력하세요</label>
+          <textarea
+            id="typingInput"
+            rows="3"
+            placeholder="이곳을 눌러 타자를 시작하세요..."
+            autocomplete="off"
+            autocapitalize="off"
+            autocorrect="off"
+            spellcheck="false"
+            aria-describedby="inputFeedback"
+          ></textarea>
+          <div class="input-meta">
+            <p id="inputFeedback" class="input-feedback" role="status" aria-live="polite">준비 완료 · 입력을 시작하면 타이머가 작동합니다.</p>
+            <span id="progressText" class="progress-text">0%</span>
+          </div>
+          <div class="progress-track" role="progressbar" aria-label="문장 입력 진행률" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressBar">
+            <div id="progressFill" class="progress-fill"></div>
+          </div>
+
+          <div class="stats-grid" aria-label="실시간 타자 연습 통계">
+            <div class="stat-card">
+              <span class="stat-label">경과 시간</span>
+              <div class="stat-value"><span id="timeValue">0.0</span><small>초</small></div>
+            </div>
+            <div class="stat-card">
+              <span class="stat-label">분당 타수</span>
+              <div class="stat-value"><span id="cpmValue">0</span><small>CPM</small></div>
+            </div>
+            <div class="stat-card">
+              <span class="stat-label">정확도</span>
+              <div class="stat-value"><span id="accuracyValue">—</span><small>%</small></div>
+            </div>
+          </div>
+
+          <section id="resultPanel" class="result-panel" aria-labelledby="resultHeading" aria-live="polite" hidden>
+            <span class="result-icon" aria-hidden="true">✓</span>
+            <div>
+              <h4 id="resultHeading">문장 완성! 멋지게 해냈어요.</h4>
+              <p id="resultSummary"></p>
+            </div>
+          </section>
+
+          <div class="game-footer">
+            <p>한글 복합모음·겹받침도 타수에 반영해요.</p>
+            <button type="button" id="restartButton" class="restart-button">
+              <span aria-hidden="true">↻</span> 다시하기
+            </button>
+          </div>
+        </section>
+
+        <aside class="history-card" aria-labelledby="history-title">
+          <div class="history-heading">
+            <span class="history-icon" aria-hidden="true">↗</span>
+            <div>
+              <p class="section-kicker">MY PROGRESS</p>
+              <h3 id="history-title">최근 연습 기록</h3>
+            </div>
+          </div>
+          <p class="history-intro">이 브라우저에 최근 5개의 결과를 저장합니다.</p>
+          <ol id="recordList" class="record-list" aria-label="최근 완료한 연습 5개"></ol>
+          <p id="storageFeedback" class="storage-feedback" aria-live="polite"></p>
+          <div class="history-guide">
+            <div class="guide-title"><span aria-hidden="true">⌁</span> 계산 기준</div>
+            <p><strong>타수(CPM)</strong> = 문장의 한글 자모 환산 타수 ÷ 경과 시간(분)</p>
+            <p><strong>정확도</strong> = 입력 시도 중 일치한 자모 수 ÷ 전체 입력 시도 자모 수 × 100</p>
+            <p class="guide-example">예: '가' 2타 · '각' 3타 · '과' 3타 · '값' 4타</p>
+            <p class="guide-footnote">한글 입력 조합 중간 단계는 오타로 집계하지 않으며, 수정 전의 확정된 오타는 정확도에 반영됩니다.</p>
+          </div>
+        </aside>
+      </div>
+    </main>
+    <footer class="site-footer">나의 속도에 맞춰 꾸준히 연습해 보세요. <span aria-hidden="true">♥</span></footer>
+  </div>
+  <noscript>게임을 실행하려면 브라우저에서 JavaScript를 활성화해 주세요.</noscript>
+</body>
+</html>
